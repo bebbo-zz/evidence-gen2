@@ -9,6 +9,7 @@ import Amplify
 import Authenticator
 import AWSCognitoAuthPlugin
 import SwiftUI
+import AWSAPIPlugin
 
 @main
 struct EvidenceGen2App: App {
