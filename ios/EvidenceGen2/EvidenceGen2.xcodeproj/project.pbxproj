@@ -16,6 +16,8 @@
 		ED46706E2B31FF0E00E0BA71 /* AWSPluginsCore in Frameworks */ = {isa = PBXBuildFile; productRef = ED46706D2B31FF0E00E0BA71 /* AWSPluginsCore */; };
 		ED4670702B31FF0E00E0BA71 /* AWSS3StoragePlugin in Frameworks */ = {isa = PBXBuildFile; productRef = ED46706F2B31FF0E00E0BA71 /* AWSS3StoragePlugin */; };
 		ED4670722B31FF0E00E0BA71 /* Amplify in Frameworks */ = {isa = PBXBuildFile; productRef = ED4670712B31FF0E00E0BA71 /* Amplify */; };
+		ED7624C42B33686F0015997A /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7624C32B33686F0015997A /* RootView.swift */; };
+		ED7624C62B33723A0015997A /* CreateEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7624C52B33723A0015997A /* CreateEntryView.swift */; };
 		ED8C78692B31D88300305EFE /* EvidenceGen2App.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8C78682B31D88300305EFE /* EvidenceGen2App.swift */; };
 		ED8C786B2B31D88300305EFE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8C786A2B31D88300305EFE /* ContentView.swift */; };
 		ED8C786D2B31D88600305EFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED8C786C2B31D88600305EFE /* Assets.xcassets */; };
@@ -33,6 +35,8 @@
 		ED4670612B31FE9E00E0BA71 /* AmplifyModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AmplifyModels.swift; path = ../../../backend/lib/model/AmplifyModels.swift; sourceTree = "<group>"; };
 		ED4670622B31FE9E00E0BA71 /* Todo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Todo.swift; path = ../../../backend/lib/model/Todo.swift; sourceTree = "<group>"; };
 		ED4670632B31FE9E00E0BA71 /* Todo+Schema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Todo+Schema.swift"; path = "../../../backend/lib/model/Todo+Schema.swift"; sourceTree = "<group>"; };
+		ED7624C32B33686F0015997A /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		ED7624C52B33723A0015997A /* CreateEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEntryView.swift; sourceTree = "<group>"; };
 		ED8C78652B31D88300305EFE /* EvidenceGen2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EvidenceGen2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED8C78682B31D88300305EFE /* EvidenceGen2App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceGen2App.swift; sourceTree = "<group>"; };
 		ED8C786A2B31D88300305EFE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -74,9 +78,19 @@
 			path = AmplifyModels;
 			sourceTree = "<group>";
 		};
+		ED7624C22B3368590015997A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				ED7624C32B33686F0015997A /* RootView.swift */,
+				ED7624C52B33723A0015997A /* CreateEntryView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		ED8C785C2B31D88300305EFE = {
 			isa = PBXGroup;
 			children = (
+				ED7624C22B3368590015997A /* Views */,
 				ED4670602B31FE9000E0BA71 /* AmplifyModels */,
 				ED8C78672B31D88300305EFE /* EvidenceGen2 */,
 				ED8C78842B31E13600305EFE /* amplifyconfiguration.json */,
@@ -202,8 +216,10 @@
 			files = (
 				ED8C786B2B31D88300305EFE /* ContentView.swift in Sources */,
 				ED4670642B31FE9E00E0BA71 /* AmplifyModels.swift in Sources */,
+				ED7624C42B33686F0015997A /* RootView.swift in Sources */,
 				ED4670662B31FE9E00E0BA71 /* Todo+Schema.swift in Sources */,
 				ED8C78692B31D88300305EFE /* EvidenceGen2App.swift in Sources */,
+				ED7624C62B33723A0015997A /* CreateEntryView.swift in Sources */,
 				ED4670652B31FE9E00E0BA71 /* Todo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
