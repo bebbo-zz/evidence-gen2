@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		57F5404C2B35D95C0020C262 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F5404B2B35D95C0020C262 /* Utilities.swift */; };
 		ED4670642B31FE9E00E0BA71 /* AmplifyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4670612B31FE9E00E0BA71 /* AmplifyModels.swift */; };
 		ED4670652B31FE9E00E0BA71 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4670622B31FE9E00E0BA71 /* Todo.swift */; };
 		ED4670662B31FE9E00E0BA71 /* Todo+Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4670632B31FE9E00E0BA71 /* Todo+Schema.swift */; };
@@ -32,6 +33,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		57F5404B2B35D95C0020C262 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		ED4670612B31FE9E00E0BA71 /* AmplifyModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AmplifyModels.swift; path = ../../../backend/lib/model/AmplifyModels.swift; sourceTree = "<group>"; };
 		ED4670622B31FE9E00E0BA71 /* Todo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Todo.swift; path = ../../../backend/lib/model/Todo.swift; sourceTree = "<group>"; };
 		ED4670632B31FE9E00E0BA71 /* Todo+Schema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Todo+Schema.swift"; path = "../../../backend/lib/model/Todo+Schema.swift"; sourceTree = "<group>"; };
@@ -68,6 +70,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		57F5404A2B35D93F0020C262 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				57F5404B2B35D95C0020C262 /* Utilities.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		ED4670602B31FE9000E0BA71 /* AmplifyModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -90,6 +100,7 @@
 		ED8C785C2B31D88300305EFE = {
 			isa = PBXGroup;
 			children = (
+				57F5404A2B35D93F0020C262 /* Utilities */,
 				ED7624C22B3368590015997A /* Views */,
 				ED4670602B31FE9000E0BA71 /* AmplifyModels */,
 				ED8C78672B31D88300305EFE /* EvidenceGen2 */,
@@ -220,6 +231,7 @@
 				ED4670662B31FE9E00E0BA71 /* Todo+Schema.swift in Sources */,
 				ED8C78692B31D88300305EFE /* EvidenceGen2App.swift in Sources */,
 				ED7624C62B33723A0015997A /* CreateEntryView.swift in Sources */,
+				57F5404C2B35D95C0020C262 /* Utilities.swift in Sources */,
 				ED4670652B31FE9E00E0BA71 /* Todo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
