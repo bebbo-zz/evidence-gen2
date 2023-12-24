@@ -5,7 +5,6 @@ IOS_PROJECT_NAME=EvidenceGen2
 
 # testing or production
 subcommand=$1
-echo $subcommand
 # check if subcommand is empty
 if [ -z "$subcommand" ]; then
     exit
@@ -13,7 +12,6 @@ fi
 
 # minor or major
 upgrade=$2
-echo $upgrade
 if [ -z "$upgrade" ]; then
     exit
 fi
@@ -25,7 +23,6 @@ fi
 if [ "$subcommand" == "production" ]; then
     TARGET=production
 fi
-echo $TARGET
 
 rm -rf /Users/ec2-user/Documents/deployment/
 mkdir /Users/ec2-user/Documents/deployment/
@@ -37,9 +34,10 @@ mkdir /Users/ec2-user/Documents/ipa/
 
 cd /Users/ec2-user/Documents/deployment/
 # list all files in S3 folder and store URI to variable
-URI=$(aws s3 ls s3://$BUCKET_NAME/$TARGET/ | awk '{print $4}')
+URI=$(aws s3 ls s3://$BUCKET_NAME/$TARGET/ | awk '{if($3>0) print $4}')
 # combine URI and file name to get full file path
 FILE_PATH=s3://$BUCKET_NAME/$TARGET/$URI
+echo $FILE_PATH
 
 # download file from S3
 aws s3 cp $FILE_PATH .
@@ -48,6 +46,20 @@ aws s3 cp $FILE_PATH .
 unzip $URI
 rm $URI
 
+# read entry from DynamoDB table
+entry=$(aws dynamodb get-item --table-name deployments --key '{"id":{"S":"current"}}' --region $REGION)
+echo $entry
+
+# extract value from entry
+MAJOR=$(echo $entry | jq -r '.Item.major.S')
+echo $MAJOR
+
+MINOR=$(echo $entry | jq -r '.Item.minor.S')
+echo $MINOR
+
+BACKEND=$(echo $entry | jq -r '.Item.testing.M.backend.S')
+echo $BACKEND
+
 # get backend config file
 cd backend
 
@@ -55,44 +67,31 @@ cd backend
 npm install
 npx amplify generate config --stack $BACKEND --format json-mobile
 
-# read entry from DynamoDB table
-entry=$(aws dynamodb get-item --table-name deployments --key '{"id":{"S":"current"}}' --region $REGION)
-echo $entry
 
-# extract value from entry
-MAJOR=$(echo $entry | jq -r '.Item.testing.M.major.S')
-echo $MAJOR
 
-MINOR=$(echo $entry | jq -r '.Item.testing.M.minor.S')
-echo $MINOR
-
-BACKEND=$(echo $entry | jq -r '.Item.testing.M.backend.S')
-echo $BACKEND
-
-    # if upgrade flag is set, increment MINOR version
-    if [ "$upgrade" == "minor" ]; then
-        MINOR=$((MINOR+1))
-        echo $MINOR
+# if upgrade flag is set, increment MINOR version
+if [ "$upgrade" == "minor" ]; then
+    MINOR=$((MINOR+1))
+    echo $MINOR
         
-        # update DynamoDB table
-        aws dynamodb update-item --table-name deployments --key '{"id":{"S":"current"}}' --update-expression "SET testing.minor = :newversion" --expression-attribute-values '{":newversion":{"S":"'$MINOR'"}}' --region $REGION
-    fi
+    # update DynamoDB table
+    aws dynamodb update-item --table-name deployments --key '{"id":{"S":"current"}}' --update-expression "SET minor = :newversion" --expression-attribute-values '{":newversion":{"S":"'$MINOR'"}}' --region $REGION
+fi
 
-    if [ "$upgrade" == "major" ]; then
+if [ "$upgrade" == "major" ]; then
         MAJOR=$((MAJOR+1))
         echo $MAJOR
         MINOR=0
         echo $MINOR
         # update DynamoDB table
-        aws dynamodb update-item --table-name deployments --key '{"id":{"S":"current"}}' --update-expression "SET testing.major = :newversion, testing.minor = :newminor" --expression-attribute-values '{":newversion":{"S":"'$MAJOR'"}, ":newminor":{"S":"0"}}' --region $REGION
-    fi
+        aws dynamodb update-item --table-name deployments --key '{"id":{"S":"current"}}' --update-expression "SET major = :newversion, minor = :newminor" --expression-attribute-values '{":newversion":{"S":"'$MAJOR'"}, ":newminor":{"S":"0"}}' --region $REGION
+fi
 
 # combine MAJOR and MINOR to a new string variable
 VERSION=$MAJOR.$MINOR
 echo $VERSION
 
-# move file on S3 to archive folder
-aws s3 mv $FILE_PATH s3://$BUCKET_NAME/source-archive/$VERSION.zip
+exit
 
 cd /Users/ec2-user/Documents/deployment/frontend
 
@@ -108,6 +107,14 @@ echo $KEYID
 ISSUERID=$(echo $secret_value | jq -r '.ISSUERID')
 echo $ISSUERID
 
+IOS_PROJECT_NAME=EvidenceGen2
+PLIST="/Users/ec2-user/Documents/deployment/ios/$IOS_PROJECT_NAME/$IOS_PROJECT_NAME/Info.plist"
 
+/usr/libexec/Plistbuddy -c "Set CFBundleVersion $VERSION" "$PLIST"
+/usr/libexec/Plistbuddy -c "Set CFBundleShortVersionString $VERSION" "$PLIST"
 
+archive_file="/Users/ec2-user/Documents/archive/$IOS_PROJECT_NAME.xcarchive"
+xcodebuild -project /Users/ec2-user/Documents/deployment/ios/$IOS_PROJECT_NAME/EvidenceGen2.xcodeproj -scheme EvidenceGen2 -configuration AppStoreDistribution archive -archivePath $archive_file
 
+# move file on S3 to archive folder
+aws s3 mv $FILE_PATH s3://$BUCKET_NAME/source-archive/$VERSION.zip
