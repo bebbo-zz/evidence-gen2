@@ -37,7 +37,6 @@ if [ "$subcommand" == "start" ]; then
     sleep 300
     ssh -L 5900:localhost:5900 -i $INSTANCE_KEY_PATH ec2-user@$INSTANCE_DNS
 
-
 fi
 
 # check if subcommand is stop
