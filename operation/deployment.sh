@@ -99,6 +99,7 @@ APPFILE=$1
 set -euo pipefail
 
 # retrieve value from AWS Secrets Manager
+REGION=us-west-2
 secret_name=deploymentkey
 secret_value=$(aws secretsmanager get-secret-value --secret-id $secret_name --region $REGION | jq -r '.SecretString')
 echo $secret_value
@@ -110,11 +111,32 @@ echo $ISSUERID
 IOS_PROJECT_NAME=EvidenceGen2
 PLIST="/Users/ec2-user/Documents/deployment/ios/$IOS_PROJECT_NAME/$IOS_PROJECT_NAME/Info.plist"
 
-/usr/libexec/Plistbuddy -c "Set CFBundleVersion $VERSION" "$PLIST"
-/usr/libexec/Plistbuddy -c "Set CFBundleShortVersionString $VERSION" "$PLIST"
+# build Info.plist
+#/usr/libexec/Plistbuddy -c "Set CFBundleVersion $VERSION" "$PLIST"
+#/usr/libexec/Plistbuddy -c "Set CFBundleShortVersionString $VERSION" "$PLIST"
 
-archive_file="/Users/ec2-user/Documents/archive/$IOS_PROJECT_NAME.xcarchive"
-xcodebuild -project /Users/ec2-user/Documents/deployment/ios/$IOS_PROJECT_NAME/EvidenceGen2.xcodeproj -scheme EvidenceGen2 -configuration AppStoreDistribution archive -archivePath $archive_file
+#security unlock-keychain -p xxxx /Library/Keychains/System.keychain
+
+cd /Users/ec2-user/Documents/deployment/ios/$IOS_PROJECT_NAME
+
+archive_file=/Users/ec2-user/Documents/archive/Archive.xcarchive
+xcodebuild -project EvidenceGen2.xcodeproj -scheme EvidenceGen2 -configuration Release archive -archivePath $archive_file
+
+archive_file=/Users/ec2-user/Documents/archive/Archive.xcarchive
+ipa_path=/Users/ec2-user/Documents/ipa
+rm -rf $ipa_path
+export_options_file=/Users/ec2-user/Documents/scripts/AppStoreExportOptions.plist
+xcodebuild -exportArchive -archivePath $archive_file -exportOptionsPlist $export_options_file -exportPath $ipa_file
+
+VERSION="1.0"
+BUCKET_NAME=iosdeploymentbucket-661882677539
+aws s3 cp $ipa_path s3://$BUCKET_NAME/ipa-archive/$VERSION/ --recursive
+
+
+xcrun altool --validate-app --type ios --file "$ipa_path/$IOS_PROJECT_NAME.ipa" --apiKey $KEYID --apiIssuer $ISSUERID
+
+xcrun altool --upload-app --type ios --file "$ipa_path/$IOS_PROJECT_NAME.ipa" --apiKey $KEYID --apiIssuer $ISSUERID
 
 # move file on S3 to archive folder
+# should only backup after changes
 aws s3 mv $FILE_PATH s3://$BUCKET_NAME/source-archive/$VERSION.zip
