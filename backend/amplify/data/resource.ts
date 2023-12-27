@@ -1,10 +1,13 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 
 const schema = a.schema({
-  Todo: a
+  Evidence: a
     .model({
-      content: a.string(),
-      isDone: a.boolean()
+      id: a.id(),
+      content: a.string().required(),
+      hash: a.string(),
+      type: a.enum(['IMAGE', 'VIDEO', 'AUDIO', 'TEXT']),
+      created: a.datetime()
     })
     .authorization([a.allow.owner()])
 });
