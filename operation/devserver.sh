@@ -13,7 +13,7 @@ if [ -z "$subcommand" ]; then
 fi
 
 if [ "$subcommand" == "onto" ]; then
-    HOST_ID=h-09bec6805c05013eb
+    
     echo $HOST_ID
 
     # modify the instance placement
