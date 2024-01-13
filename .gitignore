@@ -1,3 +1,5 @@
 .DS_Store
 amplifyconfiguration.json
 operation/target_Info.plist
+*.p8
+*.pem

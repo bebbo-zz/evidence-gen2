@@ -98,16 +98,6 @@ cd /Users/ec2-user/Documents/deployment/frontend
 APPFILE=$1
 set -euo pipefail
 
-# retrieve value from AWS Secrets Manager
-REGION=us-west-2
-secret_name=deploymentkey
-secret_value=$(aws secretsmanager get-secret-value --secret-id $secret_name --region $REGION | jq -r '.SecretString')
-echo $secret_value
-KEYID=$(echo $secret_value | jq -r '.KEYID')
-echo $KEYID
-ISSUERID=$(echo $secret_value | jq -r '.ISSUERID')
-echo $ISSUERID
-
 IOS_PROJECT_NAME=EvidenceGen2
 PLIST="/Users/ec2-user/Documents/deployment/ios/$IOS_PROJECT_NAME/$IOS_PROJECT_NAME/Info.plist"
 
@@ -127,6 +117,16 @@ ipa_path=/Users/ec2-user/Documents/ipa
 rm -rf $ipa_path
 export_options_file=/Users/ec2-user/Documents/scripts/AppStoreExportOptions.plist
 xcodebuild -exportArchive -archivePath $archive_file -exportOptionsPlist $export_options_file -exportPath $ipa_file
+
+# retrieve value from AWS Secrets Manager
+REGION=us-west-2
+secret_name=deploymentkey
+secret_value=$(aws secretsmanager get-secret-value --secret-id $secret_name --region $REGION | jq -r '.SecretString')
+echo $secret_value
+KEYID=$(echo $secret_value | jq -r '.KEYID')
+echo $KEYID
+ISSUERID=$(echo $secret_value | jq -r '.ISSUERID')
+echo $ISSUERID
 
 VERSION="1.0"
 BUCKET_NAME=iosdeploymentbucket-661882677539
