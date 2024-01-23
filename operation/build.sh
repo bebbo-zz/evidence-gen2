@@ -10,6 +10,9 @@ if [ -z "$subcommand" ]; then
     exit
 fi
 
+# install nodejs on amazon linux
+sudo yum install -y nodejs
+
 # minor or major
 upgrade=$2
 if [ -z "$upgrade" ]; then

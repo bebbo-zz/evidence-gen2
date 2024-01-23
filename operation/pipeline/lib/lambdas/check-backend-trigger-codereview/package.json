@@ -1,0 +1,12 @@
+{
+  "name": "initialize-deployment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "locally": "tsc; node -e \"console.log(require('./index.js').handler(require('./event.json')));\""
+  },
+  "author": "",
+  "license": "ISC"
+}

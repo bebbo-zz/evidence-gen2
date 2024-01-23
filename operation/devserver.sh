@@ -22,7 +22,7 @@ if [ "$subcommand" == "onto" ]; then
     # MUST BE IN SAME AZ
     # start existing instance with given INSTANCE_ID
     aws ec2 start-instances --instance-ids $INSTANCE_ID --region $REGION
-    
+
 fi
 
 # check if subcommand is start
