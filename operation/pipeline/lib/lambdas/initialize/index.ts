@@ -15,8 +15,8 @@ export const handler = async (event: any, context: any) => {
     /**
      * CUSTOM BEGIN - START
      */
-    var current = "DEPLOYING_BACKEND"
-    var next = "DEPLOYING_BACKEND"
+    var current = "INITIALIZATION"
+    var next = "BACKEND_DEPLOYMENT"
 
     // generate a random hash 
 
@@ -78,10 +78,17 @@ export const handler = async (event: any, context: any) => {
      * ACTION START
      */
     // check
+    var checkResult = true;
 
     // check success
+    if (checkResult) {
+      // NEXT ACTION
+    }
 
     // check failed
+    if (!checkResult) {
+      // resend message to current queue
+    }
 
     const messageBody = {
       currentQueueURL: nextQueueURL,

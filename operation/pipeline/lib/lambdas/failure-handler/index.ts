@@ -29,23 +29,6 @@ export const handler = async (event: any, context: any) => {
     const response = await docClient.send(command);
     console.log(response);
 
-    // ENV
-    // current status
-    // next status
-
-    // update status
-    // check for a certain success status
-    // if success 
-    // trigger action
-    // move message to next status -> queue
-    // log entry of success
-
-    // check on timeout
-    // enter message into error queue
-
-    // catch error
-    // enter message into error queue
-
     */
     try {
       return {
